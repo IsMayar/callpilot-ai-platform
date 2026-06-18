@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
@@ -58,11 +57,6 @@ public class Business {
         updatedAt = now;
     }
 
-    @PreUpdate
-    void preUpdate() {
-        updatedAt = Instant.now();
-    }
-
     public UUID getId() {
         return id;
     }
@@ -100,6 +94,6 @@ public class Business {
         this.industry = industry;
         this.phoneNumber = phoneNumber;
         this.timezone = timezone;
+        this.updatedAt = Instant.now();
     }
 }
-

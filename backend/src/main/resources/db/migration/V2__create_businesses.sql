@@ -9,6 +9,3 @@ CREATE TABLE businesses (
     updated_at TIMESTAMPTZ NOT NULL,
     CONSTRAINT uk_businesses_owner_subject UNIQUE (owner_subject)
 );
-
-CREATE INDEX idx_businesses_owner_subject ON businesses(owner_subject);
-

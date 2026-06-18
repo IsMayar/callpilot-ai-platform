@@ -8,6 +8,7 @@ import com.callpilotai.business.exception.InvalidTimezoneException;
 import java.time.DateTimeException;
 import java.time.ZoneId;
 import java.util.UUID;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,11 @@ public class BusinessService {
                 normalized.phoneNumber(),
                 normalized.timezone());
 
-        return BusinessMapper.toResponse(businessRepository.save(business));
+        try {
+            return BusinessMapper.toResponse(businessRepository.save(business));
+        } catch (DataIntegrityViolationException exception) {
+            throw new BusinessAlreadyExistsException(exception);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -82,4 +87,3 @@ public class BusinessService {
             String timezone) {
     }
 }
-
