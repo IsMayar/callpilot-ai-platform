@@ -6,9 +6,8 @@ export function PublicOnlyRoute() {
   const accessToken = useAppSelector(selectAccessToken);
 
   if (accessToken) {
-    return <Navigate to="/app" replace />;
+    return <Navigate to="/app/dashboard" replace />;
   }
 
   return <Outlet />;
 }
-

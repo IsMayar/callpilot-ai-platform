@@ -38,7 +38,7 @@ export function LoginPage() {
 
       const redirectTo =
         (location.state as { from?: { pathname?: string } } | null)?.from
-          ?.pathname ?? "/app";
+          ?.pathname ?? "/app/dashboard";
 
       navigate(redirectTo, { replace: true });
     } catch {
