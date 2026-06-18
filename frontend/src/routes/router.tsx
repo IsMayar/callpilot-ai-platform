@@ -1,0 +1,51 @@
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import { AppLayout } from "@/components/layout/app-layout";
+import { BusinessOnboardingPage } from "@/pages/business-onboarding-page";
+import { DashboardPage } from "@/pages/dashboard-page";
+import { LoginPage } from "@/pages/login-page";
+import { NotFoundPage } from "@/pages/not-found-page";
+import { ProtectedRoute } from "./protected-route";
+import { PublicOnlyRoute } from "./public-only-route";
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Navigate to="/app/dashboard" replace />
+  },
+  {
+    element: <PublicOnlyRoute />,
+    children: [
+      {
+        path: "/auth/login",
+        element: <LoginPage />
+      }
+    ]
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/app",
+        element: <AppLayout />,
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/app/dashboard" replace />
+          },
+          {
+            path: "dashboard",
+            element: <DashboardPage />
+          },
+          {
+            path: "onboarding/business",
+            element: <BusinessOnboardingPage />
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />
+  }
+]);

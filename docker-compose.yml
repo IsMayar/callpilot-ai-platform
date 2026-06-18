@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: callpilot-ai-postgres
+    environment:
+      POSTGRES_DB: callpilot_ai
+      POSTGRES_USER: callpilot
+      POSTGRES_PASSWORD: callpilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - callpilot_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U callpilot -d callpilot_ai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  callpilot_postgres_data:
+
