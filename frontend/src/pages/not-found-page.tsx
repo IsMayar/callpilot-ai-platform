@@ -7,10 +7,9 @@ export function NotFoundPage() {
       <div className="w-full max-w-sm space-y-4 text-center">
         <h1 className="text-2xl font-semibold tracking-normal">Page not found</h1>
         <Button asChild>
-          <Link to="/app">Back to overview</Link>
+          <Link to="/app/dashboard">Back to dashboard</Link>
         </Button>
       </div>
     </main>
   );
 }
-
