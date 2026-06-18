@@ -25,7 +25,7 @@ export function DashboardPage() {
               </h3>
               <p className="text-sm text-muted-foreground">
                 {business
-                  ? `${business.industry} · ${business.phoneNumber} · ${business.timezone}`
+                  ? `${business.industry} | ${business.phoneNumber} | ${business.timezone}`
                   : "Complete onboarding to activate the business workspace."}
               </p>
             </div>
@@ -41,4 +41,3 @@ export function DashboardPage() {
     </div>
   );
 }
-
