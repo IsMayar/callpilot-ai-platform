@@ -27,7 +27,7 @@ export function Sidebar({ className, onNavigate }: SidebarProps) {
     <aside className={cn("flex min-h-0 flex-col bg-sidebar", className)}>
       <div className="flex h-16 shrink-0 items-center gap-3 px-4">
         <Link
-          to="/app"
+          to="/app/dashboard"
           onClick={onNavigate}
           className="flex min-w-0 items-center gap-3"
         >
