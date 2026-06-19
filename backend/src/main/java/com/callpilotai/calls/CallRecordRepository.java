@@ -1,5 +1,7 @@
 package com.callpilotai.calls;
 
+import java.time.Instant;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,10 @@ public interface CallRecordRepository extends JpaRepository<CallRecord, UUID> {
     Page<CallRecord> findByBusinessId(UUID businessId, Pageable pageable);
 
     Page<CallRecord> findByBusinessIdAndCallStatus(UUID businessId, CallStatus status, Pageable pageable);
+
+    long countByBusinessIdAndCreatedAtGreaterThanEqual(UUID businessId, Instant createdAt);
+
+    long countByBusinessIdAndCallStatusIn(UUID businessId, Collection<CallStatus> statuses);
 
     @Query("""
             SELECT callRecord
@@ -52,4 +58,3 @@ public interface CallRecordRepository extends JpaRepository<CallRecord, UUID> {
 
     Optional<CallRecord> findByIdAndBusinessId(UUID id, UUID businessId);
 }
-

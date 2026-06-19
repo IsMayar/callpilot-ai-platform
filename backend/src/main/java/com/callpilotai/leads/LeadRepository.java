@@ -2,6 +2,8 @@ package com.callpilotai.leads;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.Collection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +15,8 @@ public interface LeadRepository extends JpaRepository<Lead, UUID> {
     Page<Lead> findByBusinessId(UUID businessId, Pageable pageable);
 
     Page<Lead> findByBusinessIdAndStatus(UUID businessId, LeadStatus status, Pageable pageable);
+
+    long countByBusinessIdAndStatus(UUID businessId, LeadStatus status);
 
     @Query("""
             SELECT lead
@@ -39,4 +43,19 @@ public interface LeadRepository extends JpaRepository<Lead, UUID> {
             Pageable pageable);
 
     Optional<Lead> findByIdAndBusinessId(UUID id, UUID businessId);
+
+    Optional<Lead> findByBusinessIdAndPhoneNumberAndServiceNeeded(
+            UUID businessId,
+            String phoneNumber,
+            String serviceNeeded);
+
+    @Query("""
+            SELECT SUM(lead.estimatedValue)
+            FROM Lead lead
+            WHERE lead.business.id = :businessId
+              AND lead.status IN :statuses
+            """)
+    BigDecimal sumEstimatedValueByBusinessIdAndStatusIn(
+            @Param("businessId") UUID businessId,
+            @Param("statuses") Collection<LeadStatus> statuses);
 }

@@ -28,4 +28,6 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
             Pageable pageable);
 
     Optional<Customer> findByIdAndBusinessId(UUID id, UUID businessId);
+
+    Optional<Customer> findByBusinessIdAndEmailIgnoreCase(UUID businessId, String email);
 }

@@ -1,6 +1,7 @@
 package com.callpilotai.dashboard;
 
 import com.callpilotai.dashboard.dto.DashboardSummaryResponse;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +19,7 @@ public class DashboardController {
     }
 
     @GetMapping("/summary")
-    public DashboardSummaryResponse getSummary() {
-        return dashboardService.getSummary();
+    public DashboardSummaryResponse getSummary(Authentication authentication) {
+        return dashboardService.getSummary(authentication.getName());
     }
 }
-
