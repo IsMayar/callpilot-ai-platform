@@ -1,6 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "@/components/layout/app-layout";
 import { BusinessOnboardingPage } from "@/pages/business-onboarding-page";
+import { CustomerDetailsPage } from "@/pages/customer-details-page";
+import { CustomersPage } from "@/pages/customers-page";
 import { DashboardPage } from "@/pages/dashboard-page";
 import { LeadDetailsPage } from "@/pages/lead-details-page";
 import { LeadsPage } from "@/pages/leads-page";
@@ -45,6 +47,14 @@ export const router = createBrowserRouter([
           {
             path: "leads/:id",
             element: <LeadDetailsPage />
+          },
+          {
+            path: "customers",
+            element: <CustomersPage />
+          },
+          {
+            path: "customers/:id",
+            element: <CustomerDetailsPage />
           },
           {
             path: "onboarding/business",

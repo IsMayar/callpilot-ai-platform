@@ -1,4 +1,4 @@
-import { Building2, LayoutDashboard, UserPlus } from "lucide-react";
+import { Building2, LayoutDashboard, UserPlus, UsersRound } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -14,6 +14,11 @@ const navItems = [
     title: "Leads",
     href: "/app/leads",
     icon: UserPlus
+  },
+  {
+    title: "Customers",
+    href: "/app/customers",
+    icon: UsersRound
   },
   {
     title: "Business setup",

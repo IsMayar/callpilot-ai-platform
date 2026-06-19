@@ -29,7 +29,7 @@ public class LeadService {
         Business business = currentBusiness(ownerSubject);
         String normalizedSearch = normalizeSearch(search);
 
-        return leadRepository.searchByBusiness(business.getId(), normalizedSearch, status, pageable)
+        return findLeads(business.getId(), normalizedSearch, status, pageable)
                 .map(LeadMapper::toResponse);
     }
 
@@ -111,6 +111,22 @@ public class LeadService {
         return normalized == null ? null : normalized.toLowerCase();
     }
 
+    private Page<Lead> findLeads(UUID businessId, String search, LeadStatus status, Pageable pageable) {
+        if (search != null && status != null) {
+            return leadRepository.searchByBusinessIdAndStatus(businessId, status, search, pageable);
+        }
+
+        if (search != null) {
+            return leadRepository.searchByBusinessId(businessId, search, pageable);
+        }
+
+        if (status != null) {
+            return leadRepository.findByBusinessIdAndStatus(businessId, status, pageable);
+        }
+
+        return leadRepository.findByBusinessId(businessId, pageable);
+    }
+
     private String normalizeNullable(String value) {
         if (value == null || value.isBlank()) {
             return null;
@@ -130,4 +146,3 @@ public class LeadService {
             String notes) {
     }
 }
-

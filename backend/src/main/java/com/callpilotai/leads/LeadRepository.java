@@ -10,19 +10,33 @@ import org.springframework.data.repository.query.Param;
 
 public interface LeadRepository extends JpaRepository<Lead, UUID> {
 
+    Page<Lead> findByBusinessId(UUID businessId, Pageable pageable);
+
+    Page<Lead> findByBusinessIdAndStatus(UUID businessId, LeadStatus status, Pageable pageable);
+
     @Query("""
             SELECT lead
             FROM Lead lead
             WHERE lead.business.id = :businessId
-              AND (:status IS NULL OR lead.status = :status)
-              AND (:search IS NULL OR LOWER(lead.customerName) LIKE LOWER(CONCAT('%', :search, '%')))
+              AND LOWER(lead.customerName) LIKE LOWER(CONCAT('%', :search, '%'))
             """)
-    Page<Lead> searchByBusiness(
+    Page<Lead> searchByBusinessId(
             @Param("businessId") UUID businessId,
             @Param("search") String search,
+            Pageable pageable);
+
+    @Query("""
+            SELECT lead
+            FROM Lead lead
+            WHERE lead.business.id = :businessId
+              AND lead.status = :status
+              AND LOWER(lead.customerName) LIKE LOWER(CONCAT('%', :search, '%'))
+            """)
+    Page<Lead> searchByBusinessIdAndStatus(
+            @Param("businessId") UUID businessId,
             @Param("status") LeadStatus status,
+            @Param("search") String search,
             Pageable pageable);
 
     Optional<Lead> findByIdAndBusinessId(UUID id, UUID businessId);
 }
-

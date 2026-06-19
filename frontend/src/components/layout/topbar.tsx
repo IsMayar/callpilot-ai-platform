@@ -89,5 +89,9 @@ function getPageTitle(pathname: string) {
     return "Leads";
   }
 
+  if (pathname.includes("/customers")) {
+    return "Customers";
+  }
+
   return "Dashboard";
 }
