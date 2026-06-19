@@ -1,4 +1,12 @@
-import { Building2, LayoutDashboard, UserPlus, UsersRound } from "lucide-react";
+import {
+  Building2,
+  CalendarDays,
+  LayoutDashboard,
+  MessageSquareText,
+  PhoneCall,
+  UserPlus,
+  UsersRound
+} from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -19,6 +27,21 @@ const navItems = [
     title: "Customers",
     href: "/app/customers",
     icon: UsersRound
+  },
+  {
+    title: "Calls",
+    href: "/app/calls",
+    icon: PhoneCall
+  },
+  {
+    title: "Appointments",
+    href: "/app/appointments",
+    icon: CalendarDays
+  },
+  {
+    title: "Messages",
+    href: "/app/messages",
+    icon: MessageSquareText
   },
   {
     title: "Business setup",

@@ -93,5 +93,17 @@ function getPageTitle(pathname: string) {
     return "Customers";
   }
 
+  if (pathname.includes("/calls")) {
+    return "Calls";
+  }
+
+  if (pathname.includes("/appointments")) {
+    return "Appointments";
+  }
+
+  if (pathname.includes("/messages")) {
+    return "Messages";
+  }
+
   return "Dashboard";
 }
