@@ -1,11 +1,13 @@
 import {
-  AlertCircle,
   CalendarCheck,
   DollarSign,
   Phone,
   PhoneMissed,
+  RefreshCcw,
   UserPlus
 } from "lucide-react";
+import { PageHeader } from "@/components/common/page-header";
+import { StateBlock } from "@/components/common/state-block";
 import { Button } from "@/components/ui/button";
 import { useGetDashboardSummaryQuery } from "@/features/dashboard/dashboardApi";
 
@@ -60,34 +62,28 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div className="space-y-1">
-          <h2 className="text-2xl font-semibold tracking-normal">Dashboard</h2>
-          <p className="text-sm text-muted-foreground">
-            Your daily business recovery snapshot.
-          </p>
-        </div>
-
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => void refetch()}
-          disabled={isFetching}
-        >
-          {isFetching ? "Refreshing" : "Refresh"}
-        </Button>
-      </div>
+      <PageHeader
+        title="Dashboard"
+        description="Your daily business recovery snapshot."
+        actions={
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => void refetch()}
+            disabled={isFetching}
+          >
+            <RefreshCcw className="size-4" aria-hidden="true" />
+            {isFetching ? "Refreshing" : "Refresh"}
+          </Button>
+        }
+      />
 
       {error ? (
-        <section className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-          <div className="flex gap-3">
-            <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-            <div className="space-y-1">
-              <h3 className="font-medium">Unable to load dashboard summary.</h3>
-              <p>Refresh the page or try again in a moment.</p>
-            </div>
-          </div>
-        </section>
+        <StateBlock
+          variant="error"
+          title="Unable to load dashboard summary"
+          description="Refresh the page or try again in a moment."
+        />
       ) : null}
 
       {isFetching && !summary ? (

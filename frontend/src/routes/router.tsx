@@ -1,6 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "@/components/layout/app-layout";
+import { AiReceptionistSettingsPage } from "@/pages/ai-receptionist-settings-page";
 import { AppointmentsPage } from "@/pages/appointments-page";
+import { BillingPage } from "@/pages/billing-page";
 import { BusinessOnboardingPage } from "@/pages/business-onboarding-page";
 import { CallDetailsPage } from "@/pages/call-details-page";
 import { CallsPage } from "@/pages/calls-page";
@@ -12,6 +14,8 @@ import { LeadsPage } from "@/pages/leads-page";
 import { MessagesPage } from "@/pages/messages-page";
 import { LoginPage } from "@/pages/login-page";
 import { NotFoundPage } from "@/pages/not-found-page";
+import { SettingsPage } from "@/pages/settings-page";
+import { TeamPage } from "@/pages/team-page";
 import { ProtectedRoute } from "./protected-route";
 import { PublicOnlyRoute } from "./public-only-route";
 
@@ -75,6 +79,22 @@ export const router = createBrowserRouter([
           {
             path: "messages",
             element: <MessagesPage />
+          },
+          {
+            path: "ai-settings",
+            element: <AiReceptionistSettingsPage />
+          },
+          {
+            path: "team",
+            element: <TeamPage />
+          },
+          {
+            path: "billing",
+            element: <BillingPage />
+          },
+          {
+            path: "settings",
+            element: <SettingsPage />
           },
           {
             path: "onboarding/business",

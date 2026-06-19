@@ -46,7 +46,10 @@ export const baseApi = createApi({
     "Customer",
     "CallRecord",
     "Appointment",
-    "Message"
+    "Message",
+    "AiConfig",
+    "TeamMember",
+    "Billing"
   ],
   endpoints: () => ({})
 });
