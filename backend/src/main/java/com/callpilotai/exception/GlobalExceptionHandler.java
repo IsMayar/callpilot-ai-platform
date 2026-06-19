@@ -8,6 +8,8 @@ import com.callpilotai.business.exception.InvalidTimezoneException;
 import com.callpilotai.calls.exception.CallRecordNotFoundException;
 import com.callpilotai.customers.exception.CustomerNotFoundException;
 import com.callpilotai.leads.exception.LeadNotFoundException;
+import com.callpilotai.team.exception.TeamMemberAlreadyExistsException;
+import com.callpilotai.team.exception.TeamMemberNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import org.slf4j.Logger;
@@ -158,6 +160,26 @@ public class GlobalExceptionHandler {
         problem.setTitle("Invalid appointment schedule");
 
         return ResponseEntity.badRequest().body(problem);
+    }
+
+    @ExceptionHandler(TeamMemberNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleTeamMemberNotFound(TeamMemberNotFoundException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage());
+        problem.setTitle("Team member not found");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+    }
+
+    @ExceptionHandler(TeamMemberAlreadyExistsException.class)
+    public ResponseEntity<ProblemDetail> handleTeamMemberAlreadyExists(TeamMemberAlreadyExistsException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
+                exception.getMessage());
+        problem.setTitle("Team member already exists");
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
     }
 
     @ExceptionHandler(AuthenticationException.class)
