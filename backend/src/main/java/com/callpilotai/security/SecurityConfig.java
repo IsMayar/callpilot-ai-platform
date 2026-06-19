@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/actuator/health", "/actuator/info", "/auth/**").permitAll()
+                        .requestMatchers("/actuator/health", "/actuator/info", "/auth/login").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((request, response, exception) ->
@@ -89,4 +89,3 @@ public class SecurityConfig {
         objectMapper.writeValue(response.getOutputStream(), problem);
     }
 }
-
