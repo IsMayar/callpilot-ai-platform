@@ -12,9 +12,9 @@ spring:
     name: callpilot-ai
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/callpilot_ai
-    username: postgres
-    password: Isis@2025
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/callpilot_ai}
+    username: ${SPRING_DATASOURCE_USERNAME:callpilot}
+    password: ${SPRING_DATASOURCE_PASSWORD:callpilot}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
