@@ -1,8 +1,11 @@
 package com.callpilotai.exception;
 
+import com.callpilotai.appointments.exception.AppointmentNotFoundException;
+import com.callpilotai.appointments.exception.InvalidAppointmentScheduleException;
 import com.callpilotai.business.exception.BusinessAlreadyExistsException;
 import com.callpilotai.business.exception.BusinessNotFoundException;
 import com.callpilotai.business.exception.InvalidTimezoneException;
+import com.callpilotai.calls.exception.CallRecordNotFoundException;
 import com.callpilotai.customers.exception.CustomerNotFoundException;
 import com.callpilotai.leads.exception.LeadNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -125,6 +128,36 @@ public class GlobalExceptionHandler {
         problem.setTitle("Customer not found");
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+    }
+
+    @ExceptionHandler(CallRecordNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleCallRecordNotFound(CallRecordNotFoundException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage());
+        problem.setTitle("Call record not found");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+    }
+
+    @ExceptionHandler(AppointmentNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleAppointmentNotFound(AppointmentNotFoundException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage());
+        problem.setTitle("Appointment not found");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+    }
+
+    @ExceptionHandler(InvalidAppointmentScheduleException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidAppointmentSchedule(InvalidAppointmentScheduleException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage());
+        problem.setTitle("Invalid appointment schedule");
+
+        return ResponseEntity.badRequest().body(problem);
     }
 
     @ExceptionHandler(AuthenticationException.class)
