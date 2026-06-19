@@ -11,7 +11,7 @@ public record CorsProperties(
 
     public CorsProperties {
         if (allowedOrigins == null || allowedOrigins.isEmpty()) {
-            allowedOrigins = List.of("http://localhost:5173");
+            allowedOrigins = List.of("http://localhost:5173", "http://127.0.0.1:5173");
         }
         if (allowedMethods == null || allowedMethods.isEmpty()) {
             allowedMethods = List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
@@ -21,4 +21,3 @@ public record CorsProperties(
         }
     }
 }
-

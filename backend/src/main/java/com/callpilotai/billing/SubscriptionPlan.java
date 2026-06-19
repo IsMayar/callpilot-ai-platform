@@ -117,4 +117,18 @@ public class SubscriptionPlan {
     public Instant getUpdatedAt() {
         return updatedAt;
     }
+
+    public void update(
+            String planName,
+            SubscriptionPlanStatus status,
+            BigDecimal monthlyPrice,
+            Instant startedAt,
+            Instant renewsAt) {
+        this.planName = planName;
+        this.status = status;
+        this.monthlyPrice = monthlyPrice;
+        this.startedAt = startedAt;
+        this.renewsAt = renewsAt;
+        this.updatedAt = Instant.now();
+    }
 }

@@ -1,5 +1,6 @@
 package com.callpilotai.messages;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,5 +22,6 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
             @Param("businessId") UUID businessId,
             @Param("search") String search,
             Pageable pageable);
-}
 
+    Optional<Message> findByBusinessIdAndBody(UUID businessId, String body);
+}

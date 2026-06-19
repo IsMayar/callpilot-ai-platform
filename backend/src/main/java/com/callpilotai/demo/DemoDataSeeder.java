@@ -294,12 +294,8 @@ public class DemoDataSeeder implements ApplicationRunner {
             Customer elena,
             Lead replacementQuote,
             Lead ductwork) {
-        if (appointmentRepository.findByBusinessId(business.getId(), PageRequest.of(0, 1)).hasContent()) {
-            return;
-        }
-
         Instant now = Instant.now();
-        appointmentRepository.save(new Appointment(
+        seedAppointment(new Appointment(
                 business,
                 sarah,
                 null,
@@ -309,7 +305,7 @@ public class DemoDataSeeder implements ApplicationRunner {
                 now.plus(1, ChronoUnit.DAYS).plus(90, ChronoUnit.MINUTES),
                 AppointmentStatus.SCHEDULED,
                 sarah.getAddress()));
-        appointmentRepository.save(new Appointment(
+        seedAppointment(new Appointment(
                 business,
                 marcus,
                 replacementQuote,
@@ -319,7 +315,7 @@ public class DemoDataSeeder implements ApplicationRunner {
                 now.plus(2, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
                 AppointmentStatus.SCHEDULED,
                 marcus.getAddress()));
-        appointmentRepository.save(new Appointment(
+        seedAppointment(new Appointment(
                 business,
                 elena,
                 ductwork,
@@ -329,7 +325,7 @@ public class DemoDataSeeder implements ApplicationRunner {
                 now.plus(4, ChronoUnit.DAYS).plus(75, ChronoUnit.MINUTES),
                 AppointmentStatus.SCHEDULED,
                 elena.getAddress()));
-        appointmentRepository.save(new Appointment(
+        seedAppointment(new Appointment(
                 business,
                 elena,
                 null,
@@ -341,17 +337,20 @@ public class DemoDataSeeder implements ApplicationRunner {
                 elena.getAddress()));
     }
 
+    private void seedAppointment(Appointment appointment) {
+        appointmentRepository.findByBusinessIdAndTitle(
+                        appointment.getBusiness().getId(),
+                        appointment.getTitle())
+                .orElseGet(() -> appointmentRepository.save(appointment));
+    }
+
     private void seedMessages(
             Business business,
             Customer sarah,
             Lead emergencyRepair,
             Lead replacementQuote) {
-        if (messageRepository.findByBusinessId(business.getId(), PageRequest.of(0, 1)).hasContent()) {
-            return;
-        }
-
         Instant now = Instant.now();
-        messageRepository.save(new Message(
+        seedMessage(new Message(
                 business,
                 sarah,
                 null,
@@ -360,7 +359,7 @@ public class DemoDataSeeder implements ApplicationRunner {
                 "Hi Sarah, Austin Prime HVAC confirmed your spring tune-up for tomorrow morning.",
                 MessageStatus.SENT,
                 now.minus(2, ChronoUnit.HOURS)));
-        messageRepository.save(new Message(
+        seedMessage(new Message(
                 business,
                 sarah,
                 null,
@@ -369,7 +368,7 @@ public class DemoDataSeeder implements ApplicationRunner {
                 "Thanks, morning works great.",
                 MessageStatus.RECEIVED,
                 now.minus(110, ChronoUnit.MINUTES)));
-        messageRepository.save(new Message(
+        seedMessage(new Message(
                 business,
                 null,
                 emergencyRepair,
@@ -378,7 +377,7 @@ public class DemoDataSeeder implements ApplicationRunner {
                 "Jordan, we received your emergency AC request. A dispatcher will follow up shortly.",
                 MessageStatus.SENT,
                 now.minus(48, ChronoUnit.MINUTES)));
-        messageRepository.save(new Message(
+        seedMessage(new Message(
                 business,
                 null,
                 replacementQuote,
@@ -389,16 +388,32 @@ public class DemoDataSeeder implements ApplicationRunner {
                 now.minus(25, ChronoUnit.MINUTES)));
     }
 
+    private void seedMessage(Message message) {
+        messageRepository.findByBusinessIdAndBody(
+                        message.getBusiness().getId(),
+                        message.getBody())
+                .orElseGet(() -> messageRepository.save(message));
+    }
+
     private void seedAiConfig(Business business) {
-        aiReceptionistConfigRepository.findByBusinessId(business.getId())
-                .orElseGet(() -> aiReceptionistConfigRepository.save(new AiReceptionistConfig(
+        AiReceptionistConfig config = aiReceptionistConfigRepository.findByBusinessId(business.getId())
+                .orElseGet(() -> new AiReceptionistConfig(
                         business,
                         "Thanks for calling Austin Prime HVAC. I can help with repairs, maintenance, estimates, and scheduling.",
                         "Thanks for calling Austin Prime HVAC. We are currently closed, but I can still capture your request and alert the team.",
                         "For gas smells, electrical hazards, or medical emergencies, tell the caller to contact emergency services immediately before continuing.",
                         "Confirm the caller's name, phone number, service address, system type, urgency, and preferred appointment window before booking.",
                         "AC repair, heating repair, seasonal tune-ups, HVAC replacement estimates, indoor air quality, ductwork inspections.",
-                        "+1 512-555-0199")));
+                        "+1 512-555-0199"));
+
+        config.update(
+                "Thanks for calling Austin Prime HVAC. I can help with repairs, maintenance, estimates, and scheduling.",
+                "Thanks for calling Austin Prime HVAC. We are currently closed, but I can still capture your request and alert the team.",
+                "For gas smells, electrical hazards, or medical emergencies, tell the caller to contact emergency services immediately before continuing.",
+                "Confirm the caller's name, phone number, service address, system type, urgency, and preferred appointment window before booking.",
+                "AC repair, heating repair, seasonal tune-ups, HVAC replacement estimates, indoor air quality, ductwork inspections.",
+                "+1 512-555-0199");
+        aiReceptionistConfigRepository.save(config);
     }
 
     private void seedTeamMember(Business business) {
@@ -414,16 +429,22 @@ public class DemoDataSeeder implements ApplicationRunner {
     }
 
     private void seedBillingPlan(Business business) {
-        subscriptionPlanRepository.findByBusinessId(business.getId())
-                .orElseGet(() -> {
-                    Instant now = Instant.now();
-                    return subscriptionPlanRepository.save(new SubscriptionPlan(
-                            business,
-                            "MVP Trial",
-                            SubscriptionPlanStatus.TRIAL,
-                            BigDecimal.ZERO,
-                            now.minus(3, ChronoUnit.DAYS),
-                            now.plus(11, ChronoUnit.DAYS)));
-                });
+        Instant now = Instant.now();
+        SubscriptionPlan subscriptionPlan = subscriptionPlanRepository.findByBusinessId(business.getId())
+                .orElseGet(() -> new SubscriptionPlan(
+                        business,
+                        "MVP Trial",
+                        SubscriptionPlanStatus.TRIAL,
+                        BigDecimal.ZERO,
+                        now.minus(3, ChronoUnit.DAYS),
+                        now.plus(11, ChronoUnit.DAYS)));
+
+        subscriptionPlan.update(
+                "MVP Trial",
+                SubscriptionPlanStatus.TRIAL,
+                BigDecimal.ZERO,
+                now.minus(3, ChronoUnit.DAYS),
+                now.plus(11, ChronoUnit.DAYS));
+        subscriptionPlanRepository.save(subscriptionPlan);
     }
 }
