@@ -3,6 +3,7 @@ package com.callpilotai.exception;
 import com.callpilotai.business.exception.BusinessAlreadyExistsException;
 import com.callpilotai.business.exception.BusinessNotFoundException;
 import com.callpilotai.business.exception.InvalidTimezoneException;
+import com.callpilotai.leads.exception.LeadNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -60,6 +62,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(problem);
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ProblemDetail> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                "Request parameter is invalid: " + exception.getName());
+        problem.setTitle("Invalid request parameter");
+
+        return ResponseEntity.badRequest().body(problem);
+    }
+
     @ExceptionHandler(InvalidTimezoneException.class)
     public ResponseEntity<ProblemDetail> handleInvalidTimezone(InvalidTimezoneException exception) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
@@ -86,6 +98,16 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND,
                 exception.getMessage());
         problem.setTitle("Business not found");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
+    }
+
+    @ExceptionHandler(LeadNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleLeadNotFound(LeadNotFoundException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage());
+        problem.setTitle("Lead not found");
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
     }

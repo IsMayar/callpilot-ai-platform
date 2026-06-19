@@ -22,9 +22,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
   const location = useLocation();
   const user = useAppSelector(selectAuthUser);
   const fallback = user?.name?.slice(0, 2).toUpperCase() ?? "CP";
-  const title = location.pathname.includes("/onboarding/business")
-    ? "Business onboarding"
-    : "Dashboard";
+  const title = getPageTitle(location.pathname);
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b bg-background/95 px-4 backdrop-blur sm:px-6 lg:px-8">
@@ -80,4 +78,16 @@ export function Topbar({ onMenuClick }: TopbarProps) {
       </div>
     </header>
   );
+}
+
+function getPageTitle(pathname: string) {
+  if (pathname.includes("/onboarding/business")) {
+    return "Business onboarding";
+  }
+
+  if (pathname.includes("/leads")) {
+    return "Leads";
+  }
+
+  return "Dashboard";
 }

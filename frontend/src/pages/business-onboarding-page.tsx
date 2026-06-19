@@ -275,7 +275,11 @@ function AlertMessage({ message }: { message: string }) {
 }
 
 function isNotFoundError(error: unknown) {
-  return isFetchBaseQueryError(error) && error.status === 404;
+  return (
+    isFetchBaseQueryError(error) &&
+    (error.status === 404 ||
+      ("originalStatus" in error && error.originalStatus === 404))
+  );
 }
 
 function getApiErrorMessage(error: unknown) {

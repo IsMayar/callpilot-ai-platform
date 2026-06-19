@@ -55,11 +55,11 @@ callpilot:
 
   security:
     jwt:
-      issuer: callpilot-ai
-      secret: change-me-in-local-only-change-me-in-local-only
-      access-token-expiration: PT15M
+      issuer: ${JWT_ISSUER:callpilot-ai}
+      secret: ${JWT_SECRET:change-me-in-local-only-change-me-in-local-only}
+      access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:PT15M}
 
     cors:
-      allowed-origins: http://localhost:5173
-      allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
-      allowed-headers: Authorization,Content-Type,Accept
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+      allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,PATCH,DELETE,OPTIONS}
+      allowed-headers: ${CORS_ALLOWED_HEADERS:Authorization,Content-Type,Accept}
