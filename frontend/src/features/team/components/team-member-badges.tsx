@@ -1,0 +1,45 @@
+import { Badge } from "@/components/ui/badge";
+import { teamLabel } from "@/features/team/status";
+import type { TeamMemberRole, TeamMemberStatus } from "@/features/team/types";
+import { cn } from "@/lib/utils";
+
+const roleStyles: Record<TeamMemberRole, string> = {
+  OWNER: "border-primary/20 bg-primary/10 text-primary",
+  ADMIN: "border-chart-3/20 bg-chart-3/10 text-chart-3",
+  MANAGER: "border-chart-4/20 bg-chart-4/10 text-chart-4",
+  STAFF: "border-muted-foreground/20 bg-muted text-muted-foreground"
+};
+
+const statusStyles: Record<TeamMemberStatus, string> = {
+  ACTIVE: "border-chart-2/20 bg-chart-2/10 text-chart-2",
+  INVITED: "border-chart-3/20 bg-chart-3/10 text-chart-3",
+  DISABLED: "border-destructive/20 bg-destructive/10 text-destructive"
+};
+
+export function TeamRoleBadge({
+  role,
+  className
+}: {
+  role: TeamMemberRole;
+  className?: string;
+}) {
+  return (
+    <Badge variant="outline" className={cn(roleStyles[role], className)}>
+      {teamLabel(role)}
+    </Badge>
+  );
+}
+
+export function TeamStatusBadge({
+  status,
+  className
+}: {
+  status: TeamMemberStatus;
+  className?: string;
+}) {
+  return (
+    <Badge variant="outline" className={cn(statusStyles[status], className)}>
+      {teamLabel(status)}
+    </Badge>
+  );
+}
